@@ -1,0 +1,13 @@
+dark:
+primary: #2ecc41
+secondary: rgb(188, 19, 23)
+text: #fffff
+bg: #111f22
+
+light:
+text: #000000
+primary: #33d146
+secondary: #335b24
+bg: #ffffff
+
+reelgood.com
