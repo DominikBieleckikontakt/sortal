@@ -49,5 +49,21 @@ services:
       - backend
     restart: unless-stopped
 
+  drizzle-studio:
+    image: ghcr.io/drizzle-team/gateway:0.0.23
+    ports:
+      - "4983:4983"
+    environment:
+      # Replace values with your actual MySQL credentials
+      DATABASE_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysqldb:3306/${MYSQL_DATABASE}
+      # Optionally set a master password for admin access
+      # MASTERPASS: your-secure-password
+    volumes:
+      - drizzle-studio-data:/app
+    depends_on:
+      - mysqldb
+    restart: unless-stopped
+
 volumes:
   db_data:
+  drizzle-studio-data:
