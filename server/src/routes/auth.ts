@@ -10,7 +10,7 @@ import { authenticate as authMiddleware } from "../middleware/authMiddleware";
 
 export const authRouter: Router = Router();
 
-authRouter.post("/register", register);
+authRouter.post("/signup", register);
 authRouter.post("/login", login);
 authRouter.post("/refresh", refreshToken);
 authRouter.post("/logout", logout);

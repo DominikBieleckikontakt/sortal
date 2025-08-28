@@ -13,7 +13,7 @@ import {
 export const users = mysqlTable(
   "users",
   {
-    id: varchar("id").primaryKey().default(randomUUID()),
+    id: varchar("id", { length: 256 }).primaryKey().default(randomUUID()),
     email: varchar("email", { length: 256 }).notNull(),
     password: varchar("password", { length: 256 }).notNull(),
     createdAt: timestamp("created_at").defaultNow(),
@@ -27,7 +27,7 @@ export const users = mysqlTable(
 export const refreshTokens = mysqlTable(
   "refresh_tokens",
   {
-    id: varchar("id").primaryKey().default(randomUUID()),
+    id: varchar("id", { length: 256 }).primaryKey().default(randomUUID()),
     token: varchar("token", { length: 256 }).notNull().unique(),
     userId: varchar("user_id", { length: 256 })
       .notNull()
@@ -43,13 +43,13 @@ export const refreshTokens = mysqlTable(
 );
 
 export const userSessions = mysqlTable("user_sessions", {
-  id: varchar("id").primaryKey().default(randomUUID()),
+  id: varchar("id", { length: 256 }).primaryKey().default(randomUUID()),
   userId: varchar("user_id", { length: 256 })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   sessionToken: varchar("session_token", { length: 256 }).notNull().unique(),
   ipAddress: varchar("ip_address", { length: 45 }),
-  userAgent: varchar("user_agent"),
+  userAgent: varchar("user_agent", { length: 256 }),
   lastActivity: timestamp("last_activity").defaultNow(),
   expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
