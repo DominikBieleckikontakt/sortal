@@ -11,4 +11,6 @@ export default {
     password: process.env.DB_PASSWORD || "",
     database: process.env.DB_NAME || "myapp",
   },
+  verbose: true,
+  strict: true,
 } satisfies Config;
