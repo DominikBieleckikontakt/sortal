@@ -8,7 +8,7 @@ import { signupSchema } from "@/types/schemas/auth";
 import AuthForm from "./AuthForm";
 
 import { Button } from "../ui/button";
-import InputGroup from "./InputGroup";
+import TextField from "../ui/text-field";
 
 const SignupForm = () => {
   const {
@@ -59,25 +59,23 @@ const SignupForm = () => {
         <div className="loader mx-auto my-10" />
       ) : (
         <div className="space-y-5">
-          <InputGroup
+          <TextField
             label="Email"
-            errorObject={errors.email}
-            {...register("email")}
-            placeholder="Input your email..."
             type="email"
+            {...register("email")}
+            error={errors.email}
           />
-          <InputGroup
+          <TextField
             label="Password"
-            errorObject={errors.password}
+            error={errors.password}
             {...register("password")}
-            placeholder="Input your password..."
             type="password"
           />
-          <InputGroup
+
+          <TextField
             label="Confirm password"
-            errorObject={errors.confirmPassword}
+            error={errors.confirmPassword}
             {...register("confirmPassword")}
-            placeholder="Confirm your password..."
             type="password"
           />
           {error && <p className="text-destructive font-semibold">{error}</p>}

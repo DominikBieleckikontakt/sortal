@@ -4,15 +4,12 @@ import type { AuthFormProps } from "@/types";
 
 const AuthForm = ({ children, type, ...props }: AuthFormProps) => {
   return (
-    <form
-      className="p-8 border border-border w-fit rounded-lg shadow-sm grid gap-5 min-w-[30rem]"
-      {...props}
-    >
-      <p className="text-center font-semibold text-lg">
-        {type === "login" ? "Login to your account." : "Create an account."}
-      </p>
+    <form className="p-8 w-fit rounded-lg grid gap-5 min-w-[30rem]" {...props}>
+      {/* <p className="text-center font-semibold text-lg">
+        {type === "login" ? "Login to your account" : "Create an account"}
+      </p> */}
       {children}
-      {type === "login" ? (
+      {/* {type === "login" ? (
         <p>
           You don't have an account?{" "}
           <Link to="/auth/signup" className="text-primary font-semibold">
@@ -26,7 +23,7 @@ const AuthForm = ({ children, type, ...props }: AuthFormProps) => {
             Log in.
           </Link>
         </p>
-      )}
+      )} */}
     </form>
   );
 };
