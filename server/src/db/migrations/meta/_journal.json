@@ -15,6 +15,62 @@
       "when": 1756398068898,
       "tag": "0001_parched_tarot",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1762719139862,
+      "tag": "0002_mighty_liz_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1762760918116,
+      "tag": "0003_previous_vivisector",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1762761089674,
+      "tag": "0004_fuzzy_ogun",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1762761440702,
+      "tag": "0005_uneven_reavers",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1762761580716,
+      "tag": "0006_glorious_cobalt_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1762762541621,
+      "tag": "0007_perfect_lila_cheney",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1762762771631,
+      "tag": "0008_dashing_preak",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1762788439814,
+      "tag": "0009_hesitant_angel",
+      "breakpoints": true
     }
   ]
 }

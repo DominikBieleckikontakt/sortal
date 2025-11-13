@@ -1,16 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 
-import AuthPage from "./pages/AuthPage";
-
-const router = createBrowserRouter([
-  {
-    element: <AuthPage />,
-    path: "/auth",
-  },
-]);
+import router from "./router";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

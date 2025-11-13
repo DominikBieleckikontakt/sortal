@@ -41,7 +41,7 @@ services:
   frontend:
     build: ./client
     volumes:
-      - ./client:/app
+      - ./client:/app:delegated
       - /app/node_modules
     ports:
       - "3000:3000"

@@ -16,3 +16,8 @@ export type InputGroupProps = React.ComponentProps<typeof Input> & {
   label: string;
   errorObject: FieldError | undefined;
 };
+
+export type AuthErrorType = {
+  status: number;
+  message: string;
+};

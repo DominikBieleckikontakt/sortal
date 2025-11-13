@@ -1,82 +1,86 @@
-import { randomUUID } from "crypto";
-import { relations } from "drizzle-orm";
+import { boolean } from "drizzle-orm/mysql-core";
 import {
-  boolean,
   index,
   mysqlTable,
   timestamp,
   varchar,
+  text,
+  type MySqlTableWithColumns,
 } from "drizzle-orm/mysql-core";
-
-// Tables
 
 export const users = mysqlTable(
   "users",
   {
-    id: varchar("id", { length: 256 }).primaryKey().default(randomUUID()),
+    id: varchar("id", { length: 256 }).primaryKey(),
+    name: varchar("name", { length: 256 }),
     email: varchar("email", { length: 256 }).notNull(),
-    password: varchar("password", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-    isActive: boolean("is_active").default(true),
+    emailVerified: boolean("email_verified").default(false),
+    image: text("image"),
+    createdAt: timestamp("created_at", { mode: "string" }).defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
   },
-  (table) => ({
-    emailIdx: index("email_idx").on(table.email),
-  })
+  (table) => [index("email_idx").on(table.email)]
 );
 
-export const refreshTokens = mysqlTable(
-  "refresh_tokens",
+export const sessions: MySqlTableWithColumns<any> = mysqlTable(
+  "sessions",
   {
-    id: varchar("id", { length: 256 }).primaryKey().default(randomUUID()),
-    token: varchar("token", { length: 256 }).notNull().unique(),
-    userId: varchar("user_id", { length: 256 })
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+    id: varchar("id", { length: 255 }).primaryKey(),
+    userId: varchar("user_id", { length: 255 }).notNull(),
+    token: varchar("token", { length: 255 }).notNull().unique(),
     expiresAt: timestamp("expires_at").notNull(),
     createdAt: timestamp("created_at").defaultNow(),
-    isRevoked: boolean("is_revoked").default(false),
+    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
+    ipAddress: varchar("ip_address", { length: 45 }),
+    userAgent: varchar("user_agent", { length: 256 }),
   },
-  (table) => ({
-    tokenIdx: index("token_idx").on(table.token),
-    userIdIdx: index("user_id_idx").on(table.userId),
-  })
+  (table) => [index("user_id_idx").on(table.userId)]
 );
 
-export const userSessions = mysqlTable("user_sessions", {
-  id: varchar("id", { length: 256 }).primaryKey().default(randomUUID()),
-  userId: varchar("user_id", { length: 256 })
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  sessionToken: varchar("session_token", { length: 256 }).notNull().unique(),
-  ipAddress: varchar("ip_address", { length: 45 }),
-  userAgent: varchar("user_agent", { length: 256 }),
-  lastActivity: timestamp("last_activity").defaultNow(),
-  expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-});
+export const accounts: MySqlTableWithColumns<any> = mysqlTable(
+  "accounts",
+  {
+    id: varchar("id", { length: 255 }).primaryKey(),
+    userId: varchar("user_id", { length: 255 }).notNull(),
+    accountId: varchar("account_id", { length: 255 }).notNull(),
+    providerId: varchar("provider_id", { length: 255 }).notNull(),
+    providerType: varchar("provider_type", { length: 255 }),
+    accessToken: text("access_token"),
+    refreshToken: text("refresh_token"),
+    idToken: text("id_token"),
+    accessTokenExpiresAt: timestamp("access_token_expires_at"),
+    refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+    expiresAt: timestamp("expires_at"),
+    password: text("password"),
+    scope: text("scope"),
+    createdAt: timestamp("created_at", { mode: "string" }).defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
+  },
+  (table) => [
+    index("provider_providerAccountId_idx").on(
+      table.providerId,
+      table.accountId
+    ),
+  ]
+);
 
-// Relations
-
-export const userRelations = relations(users, ({ many }) => ({
-  refreshTokens: many(refreshTokens),
-  userSessions: many(userSessions),
-}));
-
-export const refreshTokensRelations = relations(refreshTokens, ({ one }) => ({
-  user: one(users, { fields: [refreshTokens.userId], references: [users.id] }),
-}));
-
-export const userSessionsRelations = relations(userSessions, ({ one }) => ({
-  user: one(users, { fields: [userSessions.userId], references: [users.id] }),
-}));
-
-// Types
+export const verificationTokens: MySqlTableWithColumns<any> = mysqlTable(
+  "verification_tokens",
+  {
+    identifier: varchar("identifier", { length: 255 }).notNull(),
+    token: varchar("token", { length: 255 }).notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+  },
+  (table) => [
+    index("verification_tokens_idx").on(table.identifier, table.token),
+  ]
+);
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
-export type RefreshToken = typeof refreshTokens.$inferSelect;
-export type NewRefreshToken = typeof refreshTokens.$inferInsert;
-export type UserSession = typeof userSessions.$inferSelect;
-export type NewUserSession = typeof userSessions.$inferInsert;
+
+export type Sessions = typeof sessions.$inferSelect;
+export type Accounts = typeof accounts.$inferSelect;
+export type VerificationTokens = typeof verificationTokens.$inferSelect;
 
 export type SafeUser = Omit<User, "password">;
